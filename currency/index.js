@@ -1,12 +1,28 @@
+/**
+  * You can find further informations about libraries here :
+  * axios: https://github.com/axios/axios
+  * money: http://openexchangerates.github.io/money.js/
+  */
 const axios = require('axios');
 const money = require('money');
 
+
+/**
+  *RATES_URL and BLOCKCHAIN_URL get informations about exchange rates of various currencies.
+  */
 const RATES_URL = 'https://api.exchangeratesapi.io/latest';
 const BLOCKCHAIN_URL = 'https://blockchain.info/ticker';
 const CURRENCY_BITCOIN = 'BTC';
 
 const isAnyBTC = (from, to) => [from, to].includes(CURRENCY_BITCOIN);
 
+/**
+  *If the user just call "node cli.js" the default value is to give the conversion of 1USD to BTC.to
+  *If not, the exports function send requests to get informations about the exchange rates of the currency 
+  *that the user specified and its exchanges rates.
+  *If the currency code is not specified on both RATES_UTL or BLOCKCHAIN_URL, it returns an error to 
+  *specify an other value. 
+  */
 module.exports = async opts => {
   const {amount = 1, from = 'USD', to = CURRENCY_BITCOIN} = opts;
   const promises = [];
@@ -43,6 +59,9 @@ module.exports = async opts => {
       });
     }
 
+    /**
+      *Change the conversion to BTC if mentionned in second
+      */
     if (anyBTC) {
       Object.assign(conversionOpts, {
         'from': to,
